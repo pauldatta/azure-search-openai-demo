@@ -148,3 +148,4 @@ static/
 
 # Env
 env.list
+Dockerfile

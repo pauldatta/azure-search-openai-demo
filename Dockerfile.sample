@@ -1,0 +1,63 @@
+# Build the js in a separate image
+FROM node:14.17.6-alpine as builder
+WORKDIR /app/frontend
+COPY app/frontend /app/frontend
+RUN npm install && npm run build
+
+# Use a smaller Python image as the runtime environment
+FROM python:3.9.7-slim-buster
+
+# Backend Build
+WORKDIR /app
+COPY app/backend /app
+COPY app/backend/requirements.txt /app
+RUN pip install -r requirements.txt
+
+# Install the Azure CLI
+RUN apt-get update && \
+    apt-get install -y curl gnupg && \
+    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+
+# Set environment variables for the Azure CLI
+ENV AZURE_CLIENT_ID= \
+    AZURE_CLIENT_SECRET= \
+    AZURE_TENANT_ID= \
+    AZURE_ENV_NAME= \
+    AZURE_FORMRECOGNIZER_RESOURCE_GROUP= \
+    AZURE_FORMRECOGNIZER_SERVICE= \
+    AZURE_LOCATION=eastus2 \
+    AZURE_OPENAI_CHATGPT_DEPLOYMENT=MilestonePaul \
+    AZURE_OPENAI_GPT_DEPLOYMENT=MilestoneSteve \
+    AZURE_OPENAI_RESOURCE_GROUP=OpenAIRG \
+    AZURE_OPENAI_SERVICE=neuralnexus \
+    AZURE_PRINCIPAL_ID= \
+    AZURE_RESOURCE_GROUP= \
+    AZURE_SEARCH_INDEX= \
+    AZURE_SEARCH_SERVICE= \
+    AZURE_SEARCH_SERVICE_RESOURCE_GROUP= \
+    AZURE_STORAGE_ACCOUNT= \
+    AZURE_STORAGE_CONTAINER=content \
+    AZURE_STORAGE_RESOURCE_GROUP= \
+    AZURE_SUBSCRIPTION_ID= \
+    BACKEND_URI= \
+    FLASK_APP=app.py \
+    FLASK_RUN_HOST=0.0.0.0
+
+# Set the host to 0.0.0.0 so that Flask can receive requests from any IP address
+ENV FLASK_RUN_HOST=0.0.0.0
+
+# Install PowerShell
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-buster-prod buster main" > /etc/apt/sources.list.d/microsoft.list && \
+    apt-get update && \
+    apt-get install -y powershell
+
+# Copy the built frontend assets
+COPY --from=builder /app/frontend/node_modules /app/static
+
+# Port
+EXPOSE 5000
+
+# Start the Flask app
+CMD flask run -h 0.0.0.0 -p 5000
