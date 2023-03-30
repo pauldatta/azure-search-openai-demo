@@ -1,5 +1,11 @@
  #!/bin/sh
 
+echo "Fixing python"
+sudo apt install software-properties-common -y
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install python3.10
+sudo apt install python3.10-venv
+
 echo ""
 echo "Loading azd .env file from current environment"
 echo ""

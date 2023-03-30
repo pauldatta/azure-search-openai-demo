@@ -12,10 +12,10 @@
       "value": "${AZURE_PRINCIPAL_ID}"
     },
     "openAiServiceName": {
-      "value": "${AZURE_OPENAI_SERVICE}"
+      "value": "neuralnexus"
     },
     "openAiResourceGroupName": {
-      "value": "${AZURE_OPENAI_RESOURCE_GROUP}"
+      "value": "OpenAIRG"
     },
     "openAiSkuName": {
       "value": "S0"

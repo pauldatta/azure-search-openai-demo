@@ -1,5 +1,11 @@
 #!/bin/sh
 
+sudo apt install software-properties-common -y
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt install python3.10
+sudo apt install python3.10-venv
+sudo apt install python-is-python3
+
 echo ""
 echo "Loading azd .env file from current environment"
 echo ""
@@ -56,7 +62,7 @@ echo "Starting backend"
 echo ""
 
 cd ../backend
-xdg-open http://127.0.0.1:5000
+#xdg-open http://127.0.0.1:5000
 ./backend_env/bin/python ./app.py
 if [ $? -ne 0 ]; then
     echo "Failed to start backend"
