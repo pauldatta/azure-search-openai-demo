@@ -27,7 +27,7 @@
         }
     },
     "forwardPorts": [
-        5000
+        8000
     ],
     "postCreateCommand": "",
     "remoteUser": "vscode",

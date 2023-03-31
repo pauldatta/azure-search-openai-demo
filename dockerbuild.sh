@@ -13,4 +13,4 @@ echo "$ENV_VARS" | while IFS='=' read -r key value; do
 done
 
 # Run the Docker container with the environment variables
-docker run $docker_run_opts -p 5000:5000 searchgpt
+docker run $docker_run_opts -p 8000:8000 searchgpt

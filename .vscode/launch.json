@@ -19,7 +19,7 @@
                 "run",
                 "--no-debugger",
                 "--no-reload",
-                "-p 5000"
+                "-p 8000"
             ],
             "console": "integratedTerminal",
             "justMyCode": true,
