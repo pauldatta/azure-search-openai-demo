@@ -22,14 +22,14 @@ stages:
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '14.x'
+        versionSpec: '19.x'
       displayName: 'Install Node.js'
 
     - script: |
         cd app/frontend
         npm install
         npm run build
-        cp -r mode_modules/* ../backend/static/
+        cp -r ./mode_modules ../backend/static/
       displayName: 'Build and copy Node.js frontend'
 
     - task: UsePythonVersion@0
