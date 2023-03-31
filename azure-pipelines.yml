@@ -5,10 +5,12 @@ variables:
   - group: POC-1
 
   # Project root folder. Point to the folder containing manage.py file.
-  projectRoot: $(System.DefaultWorkingDirectory)
+  - name: projectRoot
+    value: $(System.DefaultWorkingDirectory)
 
-  # Python version: 3.7
-  pythonVersion: '3.7'
+  # Python version to use
+  - name: pythonVersion
+    value: '3.7'
 
 stages:
 - stage: Build
@@ -98,7 +100,7 @@ stages:
                 AZURE_SEARCH_INDEX=$(POC-1.AZURE_SEARCH_INDEX)
                 AZURE_SEARCH_SERVICE=$(POC-1.AZURE_SEARCH_SERVICE)
                 AZURE_STORAGE_ACCOUNT=$(POC-1.AZURE_STORAGE_ACCOUNT)
-                AZURE_STORAGE_CONTAINER": "content",
+                AZURE_STORAGE_CONTAINER='content',
                 AZURE_STORAGE_CONNECTION_STRING=$(POC-1.AZURE_STORAGE_CONNECTION_STRING)
                 AZURE_OPENAI_API_KEY=$(POC-1.AZURE_OPENAI_API_KEY)
                 AZURE_SEARCH_API_KEY=$(POC-1.AZURE_SEARCH_API_KEY)
