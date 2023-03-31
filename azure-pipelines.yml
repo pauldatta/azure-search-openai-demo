@@ -29,7 +29,7 @@ stages:
         cd app/frontend
         npm install
         npm run build
-        cp -r ./mode_modules ../backend/static/
+        cp -r ./node_modules ../backend/static/
       displayName: 'Build and copy Node.js frontend'
 
     - task: UsePythonVersion@0
