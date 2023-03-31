@@ -10,7 +10,7 @@ variables:
 
   # Python version to use
   - name: pythonVersion
-    value: '3.7'
+    value: '3.10.6'
 
 stages:
 - stage: Build
