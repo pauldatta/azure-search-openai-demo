@@ -82,12 +82,12 @@ stages:
             inputs:
               azureSubscription: $(azureServiceConnectionId)
               appType: webAppLinux
-              appName: $(webAppName)
+              WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              runtimeStack: 'PYTHON|3.10'
-              startupCommand: 'gunicorn app:app -b 0.0.0.0:5000'
-              configurationSettings: '-WEBSITE_TIME_ZONE "Eastern Standard Time"'
-              appSettings: |
+              RuntimeStack: 'PYTHON|3.10'
+              StartupCommand: 'gunicorn app:app -b 0.0.0.0:5000'
+              ConfigurationSettings: '-WEBSITE_TIME_ZONE "Eastern Standard Time"'
+              AppSettings: |
                   -FLASK_APP "app.py"
                   -FLASK_RUN_HOST "0.0.0.0"
                   -WEBSITES_PORT "5000"
@@ -103,6 +103,6 @@ stages:
                   -AZURE_OPENAI_API_KEY "$(AZURE_OPENAI_API_KEY)"
                   -AZURE_SEARCH_API_KEY "$(AZURE_SEARCH_API_KEY)"
               deploymentMethod: 'zipDeploy'
-              slotName: 'production'
-              resourceGroupName: $(AZURE_APPSERVICE_RESOURCE_GROUP)
+              SlotName: 'production'
+              ResourceGroupName: $(AZURE_APPSERVICE_RESOURCE_GROUP)
                   
