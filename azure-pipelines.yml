@@ -10,7 +10,7 @@ variables:
 
   # Python version to use
   - name: pythonVersion
-    value: '3.10.6'
+    value: '3.10'
 
 stages:
 - stage: Build
@@ -90,7 +90,7 @@ stages:
               startUpCommand: 'gunicorn app:app -b 0.0.0.0:5000'
               appSettings: |
                 WEBSITES_PORT=5000
-              resourceGroupName: $(AZURE_OPENAI_RESOURCE_GROUP)
+              resourceGroupName: $(AZURE_APPSERVICE_RESOURCE_GROUP)
               configurationStrings: |
                 AZURE_OPENAI_CHATGPT_DEPLOYMENT=$(AZURE_OPENAI_CHATGPT_DEPLOYMENT)
                 AZURE_OPENAI_GPT_DEPLOYMENT=$(AZURE_OPENAI_GPT_DEPLOYMENT)
