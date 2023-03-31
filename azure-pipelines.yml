@@ -86,7 +86,7 @@ stages:
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
               deployToSlotOrASE: true
               slotName: 'production'
-              runtimeStack: 'PYTHON|3.8'
+              runtimeStack: 'PYTHON|3.10'
               startUpCommand: 'gunicorn app:app -b 0.0.0.0:5000'
               appSettings: |
                 WEBSITES_PORT=5000
