@@ -26,10 +26,10 @@ stages:
       displayName: 'Install Node.js'
 
     - script: |
-        cd frontend
+        cd app/frontend
         npm install
         npm run build
-        cp -r build/* ../backend/static/
+        cp -r mode_modules/* ../backend/static/
       displayName: 'Build and copy Node.js frontend'
 
     - task: UsePythonVersion@0
@@ -38,6 +38,7 @@ stages:
       displayName: 'Use Python $(pythonVersion)'
 
     - script: |
+        cd app/backend
         python -m venv antenv
         source antenv/bin/activate
         python -m pip install --upgrade pip
@@ -49,7 +50,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(projectRoot)'
+        rootFolderOrFile: '$(projectRoot)/backend'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
