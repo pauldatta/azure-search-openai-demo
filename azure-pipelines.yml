@@ -18,7 +18,7 @@ stages:
   jobs:
   - job: BuildJob
     pool:
-      vmImage: $(POC-1.vmImageName)
+      vmImage: $(vmImageName)
     steps:
     - task: NodeTool@0
       inputs:
@@ -66,24 +66,23 @@ stages:
   jobs:
   - deployment: DeploymentJob
     pool:
-      vmImage: $(POC-1.vmImageName)
-    environment: $(POC-1.environmentName)
+      vmImage: $(vmImageName)
+    environment: $(environmentName)
     strategy:
       runOnce:
         deploy:
           steps:
-
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '$(pythonVersion)'
             displayName: 'Use Python version'
 
           - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App : $(POC-1.webAppName)'
+            displayName: 'Deploy Azure Web App : $(webAppName)'
             inputs:
               appType: webAppLinux
-              azureSubscription: $(POC-1.azureServiceConnectionId)
-              appName: $(POC-1.webAppName)
+              azureSubscription: $(azureServiceConnectionId)
+              appName: $(webAppName)
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
               deployToSlotOrASE: true
               slotName: 'production'
@@ -91,18 +90,18 @@ stages:
               startUpCommand: 'gunicorn app:app -b 0.0.0.0:5000'
               appSettings: |
                 WEBSITES_PORT=5000
-              resourceGroupName: $(POC-1.AZURE_OPENAI_RESOURCE_GROUP)
+              resourceGroupName: $(AZURE_OPENAI_RESOURCE_GROUP)
               configurationStrings: |
-                AZURE_OPENAI_CHATGPT_DEPLOYMENT=$(POC-1.AZURE_OPENAI_CHATGPT_DEPLOYMENT)
-                AZURE_OPENAI_GPT_DEPLOYMENT=$(POC-1.AZURE_OPENAI_GPT_DEPLOYMENT)
-                AZURE_OPENAI_RESOURCE_GROUP=$(POC-1.AZURE_OPENAI_RESOURCE_GROUP)
-                AZURE_OPENAI_SERVICE=$(POC-1.AZURE_OPENAI_SERVICE)
-                AZURE_SEARCH_INDEX=$(POC-1.AZURE_SEARCH_INDEX)
-                AZURE_SEARCH_SERVICE=$(POC-1.AZURE_SEARCH_SERVICE)
-                AZURE_STORAGE_ACCOUNT=$(POC-1.AZURE_STORAGE_ACCOUNT)
+                AZURE_OPENAI_CHATGPT_DEPLOYMENT=$(AZURE_OPENAI_CHATGPT_DEPLOYMENT)
+                AZURE_OPENAI_GPT_DEPLOYMENT=$(AZURE_OPENAI_GPT_DEPLOYMENT)
+                AZURE_OPENAI_RESOURCE_GROUP=$(AZURE_OPENAI_RESOURCE_GROUP)
+                AZURE_OPENAI_SERVICE=$(AZURE_OPENAI_SERVICE)
+                AZURE_SEARCH_INDEX=$(AZURE_SEARCH_INDEX)
+                AZURE_SEARCH_SERVICE=$(AZURE_SEARCH_SERVICE)
+                AZURE_STORAGE_ACCOUNT=$(AZURE_STORAGE_ACCOUNT)
                 AZURE_STORAGE_CONTAINER='content',
-                AZURE_STORAGE_CONNECTION_STRING=$(POC-1.AZURE_STORAGE_CONNECTION_STRING)
-                AZURE_OPENAI_API_KEY=$(POC-1.AZURE_OPENAI_API_KEY)
-                AZURE_SEARCH_API_KEY=$(POC-1.AZURE_SEARCH_API_KEY)
+                AZURE_STORAGE_CONNECTION_STRING=$(AZURE_STORAGE_CONNECTION_STRING)
+                AZURE_OPENAI_API_KEY=$(AZURE_OPENAI_API_KEY)
+                AZURE_SEARCH_API_KEY=$(AZURE_SEARCH_API_KEY)
                 FLASK_APP=app.py
                 FLASK_RUN_HOST=0.0.0.0
