@@ -149,3 +149,4 @@ static/
 # Env
 env.list
 Dockerfile
+.http

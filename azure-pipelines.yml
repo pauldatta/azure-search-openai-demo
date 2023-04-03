@@ -1,16 +1,37 @@
+# Please create a variable group named POC-1 on ADO and add the following variables:
+#   - AZURE_APPSERVICE_RESOURCE_GROUP
+#   - AZURE_OPENAI_API_KEY
+#   - AZURE_OPENAI_CHATGPT_DEPLOYMENT
+#   - AZURE_OPENAI_GPT_DEPLOYMENT
+#   - AZURE_OPENAI_RESOURCE_GROUP
+#   - AZURE_OPENAI_SERVICE
+#   - AZURE_SEARCH_API_KEY
+#   - AZURE_SEARCH_INDEX
+#   - AZURE_SEARCH_SERVICE
+#   - AZURE_STORAGE_ACCOUNT
+#   - AZURE_STORAGE_CONNECTION_STRING
+#   - AZURE_STORAGE_CONTAINER
+#   - azureServiceConnectionId
+#   - environmentName=<same as app service name>
+#   - FLASK_APP=app.py
+#   - FLASK_RUN_HOST=0.0.0.0
+#   - pythonVersion=3.10
+#   - vmImageName=ubuntu-latest
+#   - webAppName=<same as app service name>
+
+# The following pipeline -
+# 1. Installs Node.js, builds and copies Node.js frontend, and installs Python requirements
+# 2. Archives and uploads the package
+# 3. Deploys the Azure Web App with specified settings and configurations.
+
 trigger:
 - poc
 
 variables:
   - group: POC-1
 
-  # Project root folder. Point to the folder containing manage.py file.
   - name: projectRoot
     value: $(System.DefaultWorkingDirectory)
-
-  # Python version to use
-  - name: pythonVersion
-    value: '3.10'
 
 stages:
 - stage: Build
@@ -84,7 +105,7 @@ stages:
               appType: webAppLinux
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              RuntimeStack: 'PYTHON|3.10'
+              RuntimeStack: 'PYTHON|$(pythonVersion)'
               StartupCommand: 'flask run -h 0.0.0.0 -p 8000'
               AppSettings: '-FLASK_APP "app.py" -FLASK_RUN_HOST "0.0.0.0" -AZURE_OPENAI_CHATGPT_DEPLOYMENT "$(AZURE_OPENAI_CHATGPT_DEPLOYMENT)" -AZURE_OPENAI_GPT_DEPLOYMENT "$(AZURE_OPENAI_GPT_DEPLOYMENT)" -AZURE_OPENAI_RESOURCE_GROUP "$(AZURE_OPENAI_RESOURCE_GROUP)" -AZURE_OPENAI_SERVICE "$(AZURE_OPENAI_SERVICE)" -AZURE_SEARCH_INDEX "$(AZURE_SEARCH_INDEX)" -AZURE_SEARCH_SERVICE "$(AZURE_SEARCH_SERVICE)" -AZURE_STORAGE_ACCOUNT "$(AZURE_STORAGE_ACCOUNT)" -AZURE_STORAGE_CONTAINER "content" -AZURE_STORAGE_CONNECTION_STRING "$(AZURE_STORAGE_CONNECTION_STRING)" -AZURE_OPENAI_API_KEY "$(AZURE_OPENAI_API_KEY)" -AZURE_SEARCH_API_KEY "$(AZURE_SEARCH_API_KEY)"'
               ConfigurationSettings: '-FLASK_APP "app.py" -FLASK_RUN_HOST "0.0.0.0" -AZURE_OPENAI_CHATGPT_DEPLOYMENT "$(AZURE_OPENAI_CHATGPT_DEPLOYMENT)" -AZURE_OPENAI_GPT_DEPLOYMENT "$(AZURE_OPENAI_GPT_DEPLOYMENT)" -AZURE_OPENAI_RESOURCE_GROUP "$(AZURE_OPENAI_RESOURCE_GROUP)" -AZURE_OPENAI_SERVICE "$(AZURE_OPENAI_SERVICE)" -AZURE_SEARCH_INDEX "$(AZURE_SEARCH_INDEX)" -AZURE_SEARCH_SERVICE "$(AZURE_SEARCH_SERVICE)" -AZURE_STORAGE_ACCOUNT "$(AZURE_STORAGE_ACCOUNT)" -AZURE_STORAGE_CONTAINER "content" -AZURE_STORAGE_CONNECTION_STRING "$(AZURE_STORAGE_CONNECTION_STRING)" -AZURE_OPENAI_API_KEY "$(AZURE_OPENAI_API_KEY)" -AZURE_SEARCH_API_KEY "$(AZURE_SEARCH_API_KEY)"'
