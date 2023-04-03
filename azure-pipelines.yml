@@ -80,9 +80,24 @@ stages:
       displayName: 'Upload package'
       artifact: drop
 
+- stage: Publish
+  displayName: 'Publish build artefact for release'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+    - job: BuildJob
+      pool:
+        vmImage: $(vmImageName)
+      steps:
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish'
+        inputs:
+          targetPath: $(Build.ArtifactStagingDirectory)/**
+          artifactType: 'pipeline'
+
 - stage: Deploy
   displayName: 'Deploy Web App'
-  dependsOn: Build
+  dependsOn: Publish
   condition: succeeded()
   jobs:
   - deployment: DeploymentJob
